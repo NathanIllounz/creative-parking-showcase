@@ -8,14 +8,16 @@ import heroImage from "@/assets/hero-parking.jpg";
 import productSimpleLift from "@/assets/product-simple-lift.jpg";
 import productSemiAuto from "@/assets/product-semi-auto.jpg";
 import productAutomated from "@/assets/product-automated.jpg";
+import productSpecial from "@/assets/products/s-vts-1.jpg";
 
 const categoryImages: Record<string, string> = {
   simple: productSimpleLift,
   "semi-auto": productSemiAuto,
   automated: productAutomated,
+  special: productSpecial,
 };
 
-const featuredProducts = [products[0], products[3], products[5]];
+const featuredProducts = [products[0], products[14], products[16]];
 
 const Index = () => {
   return (
@@ -93,7 +95,7 @@ const Index = () => {
             </div>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {productCategories.map((cat, i) => (
               <ScrollReveal key={cat.id} delay={i * 0.1}>
                 <Link
@@ -102,7 +104,7 @@ const Index = () => {
                 >
                   <div className="aspect-[16/10] overflow-hidden">
                     <img
-                      src={categoryImages[cat.imageKey]}
+                      src={categoryImages[cat.id]}
                       alt={cat.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />

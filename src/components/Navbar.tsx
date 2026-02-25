@@ -51,17 +51,19 @@ const Navbar = () => {
                 Products <ChevronDown size={14} />
               </Link>
               {productsOpen && (
-                <div className="absolute top-full left-0 mt-1 bg-card rounded-lg shadow-xl border border-border p-2 min-w-[220px]">
-                  {productCategories.map((cat) => (
-                    <Link
-                      key={cat.id}
-                      to={`/products?category=${cat.id}`}
-                      className="block px-4 py-2.5 text-sm text-foreground hover:bg-muted rounded-md transition-colors"
-                      onClick={() => setProductsOpen(false)}
-                    >
-                      {cat.title}
-                    </Link>
-                  ))}
+                <div className="absolute top-full left-0 pt-2">
+                  <div className="bg-card rounded-lg shadow-xl border border-border p-2 min-w-[220px]">
+                    {productCategories.map((cat) => (
+                      <Link
+                        key={cat.id}
+                        to={`/products?category=${cat.id}`}
+                        className="block px-4 py-2.5 text-sm text-foreground hover:bg-muted rounded-md transition-colors"
+                        onClick={() => setProductsOpen(false)}
+                      >
+                        {cat.title}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

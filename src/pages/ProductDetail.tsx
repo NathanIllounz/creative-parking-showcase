@@ -1,26 +1,21 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, CheckCircle, ShieldCheck, ArrowRight } from "lucide-react";
+import { useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { getProductById } from "@/constants/products";
+import { productImages } from "@/constants/productImages";
 import {
   Table,
   TableBody,
   TableCell,
   TableRow,
 } from "@/components/ui/table";
-import productSimpleLift from "@/assets/product-simple-lift.jpg";
-import productSemiAuto from "@/assets/product-semi-auto.jpg";
-import productAutomated from "@/assets/product-automated.jpg";
-
-const categoryImages: Record<string, string> = {
-  simple: productSimpleLift,
-  "semi-auto": productSemiAuto,
-  automated: productAutomated,
-};
 
 const ProductDetail = () => {
   const { id } = useParams();
   const product = getProductById(id || "");
+  const images = productImages[id || ""] || [];
+  const [activeImage, setActiveImage] = useState(0);
 
   if (!product) {
     return (
@@ -49,12 +44,29 @@ const ProductDetail = () => {
         <div className="container-wide mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <ScrollReveal>
-              <div className="rounded-lg overflow-hidden bg-muted">
-                <img
-                  src={categoryImages[product.category]}
-                  alt={product.name}
-                  className="w-full h-auto object-cover"
-                />
+              <div className="space-y-4">
+                <div className="rounded-lg overflow-hidden bg-muted aspect-[4/3]">
+                  <img
+                    src={images[activeImage]}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {images.length > 1 && (
+                  <div className="flex gap-3">
+                    {images.map((img, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setActiveImage(i)}
+                        className={`rounded-md overflow-hidden border-2 transition-colors w-24 h-20 ${
+                          activeImage === i ? "border-primary" : "border-border hover:border-primary/50"
+                        }`}
+                      >
+                        <img src={img} alt={`${product.name} view ${i + 1}`} className="w-full h-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>

@@ -1,21 +1,16 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Weight } from "lucide-react";
 import { Product } from "@/constants/products";
-import productSimpleLift from "@/assets/product-simple-lift.jpg";
-import productSemiAuto from "@/assets/product-semi-auto.jpg";
-import productAutomated from "@/assets/product-automated.jpg";
-
-const categoryImages: Record<string, string> = {
-  simple: productSimpleLift,
-  "semi-auto": productSemiAuto,
-  automated: productAutomated,
-};
+import { productImages } from "@/constants/productImages";
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
+  const images = productImages[product.id];
+  const thumbnail = images ? images[0] : "";
+
   return (
     <Link
       to={`/products/${product.id}`}
@@ -23,7 +18,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     >
       <div className="aspect-[4/3] overflow-hidden bg-muted">
         <img
-          src={categoryImages[product.category]}
+          src={thumbnail}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />

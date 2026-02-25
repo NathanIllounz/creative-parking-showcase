@@ -16,10 +16,8 @@ const Navbar = () => {
       <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
-            <div className="h-10 w-auto gradient-orange rounded-md p-1.5 flex items-center justify-center">
-              <img src={logo} alt="Creative Parking Ltd" className="h-full w-auto object-contain brightness-0 invert" />
-            </div>
+          <Link to="/" className="flex items-center">
+            <img src={logo} alt="Creative Parking Ltd" className="h-10 w-auto object-contain" />
           </Link>
 
           {/* Desktop Nav */}

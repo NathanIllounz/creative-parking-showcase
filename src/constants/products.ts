@@ -541,8 +541,8 @@ export const products: Product[] = [
     id: "ips",
     model: "IPS-2/3/4",
     name: "In-ground Parking System",
-    category: "semi-auto",
-    categoryLabel: "Semi-Auto Parking System",
+    category: "simple",
+    categoryLabel: "Simple Parking Lift",
     shortDescription: "Underground parking system that hides vehicles below ground level. Perfect for private villas.",
     liftingCapacity: "2,000–2,500 KG",
     features: [
@@ -581,8 +581,8 @@ export const products: Product[] = [
     id: "ptp-2",
     model: "PTP-2",
     name: "Pit Parking System",
-    category: "semi-auto",
-    categoryLabel: "Semi-Auto Parking System",
+    category: "simple",
+    categoryLabel: "Simple Parking Lift",
     shortDescription: "Pit-type parking system with 2,500 KG capacity. Ideal for private villas and apartments.",
     liftingCapacity: "2,500 KG",
     features: [
@@ -628,8 +628,8 @@ export const products: Product[] = [
     id: "cps-2",
     model: "CPS-2",
     name: "Cantilever Car Parking System",
-    category: "semi-auto",
-    categoryLabel: "Semi-Auto Parking System",
+    category: "simple",
+    categoryLabel: "Simple Parking Lift",
     shortDescription: "Wall-mounted cantilever parking system with 2,000 KG capacity. Requires load-bearing wall.",
     liftingCapacity: "2,000 KG",
     features: [

@@ -6,13 +6,13 @@ import serviceOdm from "@/assets/service-odm.jpg";
 import serviceSupport from "@/assets/service-support.jpg";
 
 const services = [
-  {
-    title: "Solid Machining Services",
-    image: serviceMachining,
-    description:
-      "With 5 units of 5-Axis CNC machining centers, 2 units of high precision laser cutting machines, and other advanced production equipment, we supply our customers with a wide range of machining services to meet different demands at every stage of production.",
-    highlights: ["5-Axis CNC Machining", "High Precision Laser Cutting", "Advanced Production Equipment", "Multi-Stage Production Support"],
-  },
+ // {
+ //   title: "Solid Machining Services",
+ //   image: serviceMachining,
+ //   description:
+ //     "With 5 units of 5-Axis CNC machining centers, 2 units of high precision laser cutting machines, and other advanced production equipment, we supply our customers with a wide range of machining services to meet different demands at every stage of production.",
+ //   highlights: ["5-Axis CNC Machining", "High Precision Laser Cutting", "Advanced Production Equipment", "Multi-Stage Production Support"],
+ // },
   {
     title: "Solid ODM Services",
     image: serviceOdm,

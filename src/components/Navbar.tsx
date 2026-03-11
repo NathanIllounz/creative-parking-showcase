@@ -2,14 +2,23 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { productCategories } from "@/constants/products";
+import { translations } from "@/constants/translations";
+import { useLanguage, t } from "@/contexts/LanguageContext";
 import logo from "@/assets/logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const location = useLocation();
+  const { lang, toggleLanguage } = useLanguage();
+  const tr = translations.nav;
 
   const isActive = (path: string) => location.pathname === path;
+
+  const getCategoryTitle = (catId: string) => {
+    const key = catId as keyof typeof translations.categories;
+    return translations.categories[key]?.[lang] || catId;
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-secondary/95 backdrop-blur-md border-b border-secondary">
@@ -28,7 +37,7 @@ const Navbar = () => {
                 isActive("/") ? "text-primary" : "text-secondary-foreground/80 hover:text-primary"
               }`}
             >
-              Home
+              {t(tr.home, lang)}
             </Link>
 
             {/* Products Dropdown */}
@@ -43,10 +52,10 @@ const Navbar = () => {
                   location.pathname.startsWith("/products") ? "text-primary" : "text-secondary-foreground/80 hover:text-primary"
                 }`}
               >
-                Products <ChevronDown size={14} />
+                {t(tr.products, lang)} <ChevronDown size={14} />
               </Link>
               {productsOpen && (
-                <div className="absolute top-full left-0 pt-2">
+                <div className="absolute top-full start-0 pt-2">
                   <div className="bg-card rounded-lg shadow-xl border border-border p-2 min-w-[220px]">
                     {productCategories.map((cat) => (
                       <Link
@@ -55,7 +64,7 @@ const Navbar = () => {
                         className="block px-4 py-2.5 text-sm text-foreground hover:bg-muted rounded-md transition-colors"
                         onClick={() => setProductsOpen(false)}
                       >
-                        {cat.title}
+                        {getCategoryTitle(cat.id)}
                       </Link>
                     ))}
                   </div>
@@ -69,7 +78,7 @@ const Navbar = () => {
                 isActive("/services") ? "text-primary" : "text-secondary-foreground/80 hover:text-primary"
               }`}
             >
-              Services
+              {t(tr.services, lang)}
             </Link>
             <Link
               to="/projects"
@@ -77,33 +86,50 @@ const Navbar = () => {
                 isActive("/projects") ? "text-primary" : "text-secondary-foreground/80 hover:text-primary"
               }`}
             >
-              Projects
+              {t(tr.projects, lang)}
             </Link>
+
+            {/* Language Toggle */}
+            <button
+              onClick={toggleLanguage}
+              className="mx-2 px-3 py-1.5 text-xs font-bold border border-secondary-foreground/30 text-secondary-foreground rounded-md hover:bg-secondary-foreground/10 transition-colors"
+            >
+              {lang === "en" ? "HE" : "EN"}
+            </button>
+
             <Link
               to="/contact"
-              className="ml-4 px-5 py-2.5 text-sm font-semibold gradient-orange text-primary-foreground rounded-md hover:opacity-90 transition-opacity"
+              className="ms-2 px-5 py-2.5 text-sm font-semibold gradient-orange text-primary-foreground rounded-md hover:opacity-90 transition-opacity"
             >
-              Contact Us
+              {t(tr.contactUs, lang)}
             </Link>
           </div>
 
           {/* Mobile Toggle */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-secondary-foreground"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="flex items-center gap-2 lg:hidden">
+            <button
+              onClick={toggleLanguage}
+              className="px-3 py-1.5 text-xs font-bold border border-secondary-foreground/30 text-secondary-foreground rounded-md hover:bg-secondary-foreground/10 transition-colors"
+            >
+              {lang === "en" ? "HE" : "EN"}
+            </button>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-secondary-foreground"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
         {isOpen && (
           <div className="lg:hidden pb-6 space-y-1">
-            <Link to="/" className="block px-4 py-3 text-secondary-foreground/80 hover:text-primary" onClick={() => setIsOpen(false)}>Home</Link>
-            <Link to="/products" className="block px-4 py-3 text-secondary-foreground/80 hover:text-primary" onClick={() => setIsOpen(false)}>Products</Link>
-            <Link to="/services" className="block px-4 py-3 text-secondary-foreground/80 hover:text-primary" onClick={() => setIsOpen(false)}>Services</Link>
-            <Link to="/projects" className="block px-4 py-3 text-secondary-foreground/80 hover:text-primary" onClick={() => setIsOpen(false)}>Projects</Link>
-            <Link to="/contact" className="block mx-4 mt-2 px-5 py-3 text-center font-semibold gradient-orange text-primary-foreground rounded-md" onClick={() => setIsOpen(false)}>Contact Us</Link>
+            <Link to="/" className="block px-4 py-3 text-secondary-foreground/80 hover:text-primary" onClick={() => setIsOpen(false)}>{t(tr.home, lang)}</Link>
+            <Link to="/products" className="block px-4 py-3 text-secondary-foreground/80 hover:text-primary" onClick={() => setIsOpen(false)}>{t(tr.products, lang)}</Link>
+            <Link to="/services" className="block px-4 py-3 text-secondary-foreground/80 hover:text-primary" onClick={() => setIsOpen(false)}>{t(tr.services, lang)}</Link>
+            <Link to="/projects" className="block px-4 py-3 text-secondary-foreground/80 hover:text-primary" onClick={() => setIsOpen(false)}>{t(tr.projects, lang)}</Link>
+            <Link to="/contact" className="block mx-4 mt-2 px-5 py-3 text-center font-semibold gradient-orange text-primary-foreground rounded-md" onClick={() => setIsOpen(false)}>{t(tr.contactUs, lang)}</Link>
           </div>
         )}
       </div>

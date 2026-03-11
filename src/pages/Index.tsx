@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import ScrollReveal from "@/components/ScrollReveal";
 import ProductCard from "@/components/ProductCard";
 import { products, productCategories } from "@/constants/products";
+import { translations } from "@/constants/translations";
+import { useLanguage, t } from "@/contexts/LanguageContext";
 import heroImage from "@/assets/hero-parking.jpg";
 import productSimpleLift from "@/assets/product-simple-lift.jpg";
 import productSemiAuto from "@/assets/product-semi-auto.jpg";
@@ -20,6 +22,13 @@ const categoryImages: Record<string, string> = {
 const featuredProducts = [products[0], products[14], products[16]];
 
 const Index = () => {
+  const { lang } = useLanguage();
+  const tr = translations.index;
+  const catTr = translations.categories;
+
+  const getCatTitle = (id: string) => catTr[id as keyof typeof catTr]?.[lang] || id;
+  const getCatDesc = (id: string) => catTr[`${id}Desc` as keyof typeof catTr]?.[lang] || "";
+
   return (
     <div>
       {/* Hero */}
@@ -36,28 +45,28 @@ const Index = () => {
             className="max-w-2xl"
           >
             <span className="inline-block text-primary font-semibold text-sm uppercase tracking-widest mb-4">
-              Creative Parking Ltd
+              {t(tr.heroTag, lang)}
             </span>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-secondary-foreground leading-tight mb-6">
-              Space-Saving &{" "}
-              <span className="text-gradient-orange">Durable</span>{" "}
-              Parking Solutions
+              {t(tr.heroTitle1, lang)}
+              <span className="text-gradient-orange">{t(tr.heroTitleHighlight, lang)}</span>
+              {t(tr.heroTitle2, lang)}
             </h1>
             <p className="text-lg text-secondary-foreground/70 mb-8 max-w-lg">
-              From simple hydraulic lifts to fully automated tower systems — we engineer innovative parking solutions for every space.
+              {t(tr.heroDesc, lang)}
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
                 to="/products"
                 className="inline-flex items-center gap-2 px-6 py-3 gradient-orange text-primary-foreground font-semibold rounded-md hover:opacity-90 transition-opacity"
               >
-                Explore Products <ArrowRight size={18} />
+                {t(tr.exploreProducts, lang)} <ArrowRight size={18} />
               </Link>
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 px-6 py-3 border border-secondary-foreground/30 text-secondary-foreground font-semibold rounded-md hover:bg-secondary-foreground/5 transition-colors"
               >
-                Contact Us
+                {t(translations.nav.contactUs, lang)}
               </Link>
             </div>
           </motion.div>
@@ -69,10 +78,10 @@ const Index = () => {
         <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
-              { value: "20+", label: "Product Models" },
-              { value: "3,600", label: "Max KG Capacity" },
-              { value: "45s", label: "Fastest Park Time" },
-              { value: "12mo", label: "Standard Warranty" },
+              { value: "20+", label: t(tr.statModels, lang) },
+              { value: "3,600", label: t(tr.statCapacity, lang) },
+              { value: "45s", label: t(tr.statParkTime, lang) },
+              { value: "12mo", label: t(tr.statWarranty, lang) },
             ].map((stat) => (
               <div key={stat.label}>
                 <div className="font-display font-bold text-2xl text-primary-foreground">{stat.value}</div>
@@ -88,9 +97,9 @@ const Index = () => {
         <div className="container-wide mx-auto">
           <ScrollReveal>
             <div className="text-center mb-12">
-              <span className="text-primary font-semibold text-sm uppercase tracking-widest">Our Products</span>
+              <span className="text-primary font-semibold text-sm uppercase tracking-widest">{t(tr.ourProducts, lang)}</span>
               <h2 className="font-display text-3xl lg:text-4xl font-bold text-foreground mt-2">
-                Parking Solutions for Every Need
+                {t(tr.parkingForEveryNeed, lang)}
               </h2>
             </div>
           </ScrollReveal>
@@ -105,15 +114,15 @@ const Index = () => {
                   <div className="aspect-[16/10] overflow-hidden">
                     <img
                       src={categoryImages[cat.id]}
-                      alt={cat.title}
+                      alt={getCatTitle(cat.id)}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
                   <div className="p-6">
-                    <h3 className="font-display font-bold text-xl text-foreground mb-2">{cat.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-4">{cat.description}</p>
+                    <h3 className="font-display font-bold text-xl text-foreground mb-2">{getCatTitle(cat.id)}</h3>
+                    <p className="text-sm text-muted-foreground mb-4">{getCatDesc(cat.id)}</p>
                     <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary group-hover:gap-2.5 transition-all">
-                      View Products <ArrowRight size={14} />
+                      {t(tr.viewProducts, lang)} <ArrowRight size={14} />
                     </span>
                   </div>
                 </Link>
@@ -128,9 +137,9 @@ const Index = () => {
         <div className="container-wide mx-auto">
           <ScrollReveal>
             <div className="text-center mb-12">
-              <span className="text-primary font-semibold text-sm uppercase tracking-widest">Featured</span>
+              <span className="text-primary font-semibold text-sm uppercase tracking-widest">{t(tr.featured, lang)}</span>
               <h2 className="font-display text-3xl lg:text-4xl font-bold text-foreground mt-2">
-                Popular Models
+                {t(tr.popularModels, lang)}
               </h2>
             </div>
           </ScrollReveal>
@@ -149,18 +158,18 @@ const Index = () => {
         <div className="container-wide mx-auto">
           <ScrollReveal>
             <div className="text-center mb-12">
-              <span className="text-primary font-semibold text-sm uppercase tracking-widest">Why Creative Parking</span>
+              <span className="text-primary font-semibold text-sm uppercase tracking-widest">{t(tr.whyUs, lang)}</span>
               <h2 className="font-display text-3xl lg:text-4xl font-bold text-foreground mt-2">
-                Built for Reliability
+                {t(tr.builtForReliability, lang)}
               </h2>
             </div>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { icon: Shield, title: "Safety First", desc: "Multi-layer safety with anti-fall locks, photocell sensors, and emergency stops on every unit." },
-              { icon: Zap, title: "Fast Installation", desc: "Preassembled laser-cut parts mean faster on-site installation and easy relocation." },
-              { icon: Wrench, title: "Customizable", desc: "Colors, dimensions, voltage, and capacity — all configurable to your project requirements." },
-              { icon: CheckCircle, title: "12-Month Warranty", desc: "Every product backed by a standard warranty with extended options available." },
+              { icon: Shield, title: t(tr.safetyFirst, lang), desc: t(tr.safetyDesc, lang) },
+              { icon: Zap, title: t(tr.fastInstallation, lang), desc: t(tr.fastInstallationDesc, lang) },
+              { icon: Wrench, title: t(tr.customizable, lang), desc: t(tr.customizableDesc, lang) },
+              { icon: CheckCircle, title: t(tr.warranty, lang), desc: t(tr.warrantyDesc, lang) },
             ].map((item, i) => (
               <ScrollReveal key={item.title} delay={i * 0.1}>
                 <div className="text-center p-6">
@@ -181,16 +190,16 @@ const Index = () => {
         <div className="container-wide mx-auto text-center">
           <ScrollReveal>
             <h2 className="font-display text-3xl lg:text-4xl font-bold text-secondary-foreground mb-4">
-              Ready to Optimize Your Parking Space?
+              {t(tr.ctaTitle, lang)}
             </h2>
             <p className="text-secondary-foreground/60 mb-8 max-w-lg mx-auto">
-              Get in touch with our team to discuss the ideal parking solution for your project.
+              {t(tr.ctaDesc, lang)}
             </p>
             <Link
               to="/contact"
               className="inline-flex items-center gap-2 px-8 py-4 gradient-orange text-primary-foreground font-semibold rounded-md hover:opacity-90 transition-opacity text-lg"
             >
-              Get a Free Consultation <ArrowRight size={20} />
+              {t(tr.ctaButton, lang)} <ArrowRight size={20} />
             </Link>
           </ScrollReveal>
         </div>

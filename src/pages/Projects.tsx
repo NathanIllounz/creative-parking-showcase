@@ -1,60 +1,35 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
+import { translations } from "@/constants/translations";
+import { useLanguage, t } from "@/contexts/LanguageContext";
 import productSimpleLift from "@/assets/product-simple-lift.jpg";
 import productSemiAuto from "@/assets/product-semi-auto.jpg";
 import productAutomated from "@/assets/product-automated.jpg";
 
-const projectList = [
-  {
-    title: "Residential Community — Dubai",
-    type: "PPS Puzzle Parking System",
-    spaces: "120 spaces",
-    image: productSemiAuto,
-  },
-  {
-    title: "Private Villa — London",
-    type: "IPS In-ground System",
-    spaces: "4 spaces",
-    image: productSimpleLift,
-  },
-  {
-    title: "Commercial Tower — Singapore",
-    type: "ATP Automated Tower",
-    spaces: "200 spaces",
-    image: productAutomated,
-  },
-  {
-    title: "Shopping Mall — Riyadh",
-    type: "RPS Rotary System",
-    spaces: "16 spaces",
-    image: productAutomated,
-  },
-  {
-    title: "Office Building — Berlin",
-    type: "TP-270 Simple Lift",
-    spaces: "40 spaces",
-    image: productSimpleLift,
-  },
-  {
-    title: "Car Dealership — Sydney",
-    type: "FP-360 Four Post Lift",
-    spaces: "24 spaces",
-    image: productSemiAuto,
-  },
-];
-
 const Projects = () => {
+  const { lang } = useLanguage();
+  const tr = translations.projectsPage;
+
+  const projectList = [
+    { title: t(tr.project1, lang), type: "PPS Puzzle Parking System", spaces: `120 ${t(tr.spaces, lang)}`, image: productSemiAuto },
+    { title: t(tr.project2, lang), type: "IPS In-ground System", spaces: `4 ${t(tr.spaces, lang)}`, image: productSimpleLift },
+    { title: t(tr.project3, lang), type: "ATP Automated Tower", spaces: `200 ${t(tr.spaces, lang)}`, image: productAutomated },
+    { title: t(tr.project4, lang), type: "RPS Rotary System", spaces: `16 ${t(tr.spaces, lang)}`, image: productAutomated },
+    { title: t(tr.project5, lang), type: "TP-270 Simple Lift", spaces: `40 ${t(tr.spaces, lang)}`, image: productSimpleLift },
+    { title: t(tr.project6, lang), type: "FP-360 Four Post Lift", spaces: `24 ${t(tr.spaces, lang)}`, image: productSemiAuto },
+  ];
+
   return (
     <div className="pt-20">
       <section className="gradient-charcoal section-padding">
         <div className="container-wide mx-auto text-center">
-          <span className="text-primary font-semibold text-sm uppercase tracking-widest">Our Work</span>
+          <span className="text-primary font-semibold text-sm uppercase tracking-widest">{t(tr.ourWork, lang)}</span>
           <h1 className="font-display text-4xl lg:text-5xl font-bold text-secondary-foreground mt-2 mb-4">
-            Projects
+            {t(tr.projects, lang)}
           </h1>
           <p className="text-secondary-foreground/60 max-w-xl mx-auto">
-            A selection of parking solutions we've delivered worldwide.
+            {t(tr.projectsDesc, lang)}
           </p>
         </div>
       </section>
@@ -87,13 +62,13 @@ const Projects = () => {
         <div className="container-wide mx-auto text-center">
           <ScrollReveal>
             <h2 className="font-display text-3xl font-bold text-secondary-foreground mb-4">
-              Have a Project in Mind?
+              {t(tr.haveProject, lang)}
             </h2>
             <Link
               to="/contact"
               className="inline-flex items-center gap-2 px-8 py-4 gradient-orange text-primary-foreground font-semibold rounded-md hover:opacity-90 transition-opacity"
             >
-              Let's Discuss <ArrowRight size={18} />
+              {t(tr.letsDiscuss, lang)} <ArrowRight size={18} />
             </Link>
           </ScrollReveal>
         </div>

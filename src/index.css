@@ -98,6 +98,23 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', sans-serif;
   }
+
+  /* Keep numbers in correct LTR order in RTL mode */
+  [dir="rtl"] {
+    unicode-bidi: plaintext;
+  }
+
+  [dir="rtl"] span,
+  [dir="rtl"] p,
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] li,
+  [dir="rtl"] td,
+  [dir="rtl"] a {
+    unicode-bidi: plaintext;
+  }
 }
 
 @layer components {

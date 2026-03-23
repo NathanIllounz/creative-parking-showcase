@@ -12,6 +12,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Services from "./pages/Services";
 import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
+import CsvExport from "./pages/CsvExport";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/services" element={<Services />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/csv" element={<CsvExport />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />

@@ -12,6 +12,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Services from "./pages/Services";
 import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
+import CsvExport from "./pages/CsvExport";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

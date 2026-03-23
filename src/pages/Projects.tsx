@@ -1,27 +1,36 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight, MapPin, ChevronLeft, ChevronRight, X } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { translations } from "@/constants/translations";
 import { useLanguage, t } from "@/contexts/LanguageContext";
-import productSimpleLift from "@/assets/product-simple-lift.jpg";
-import productSemiAuto from "@/assets/product-semi-auto.jpg";
-import productAutomated from "@/assets/product-automated.jpg";
+
+import golan1 from "@/assets/projects/golan-1.jpg";
+import golan2 from "@/assets/projects/golan-2.jpg";
+import golan3 from "@/assets/projects/golan-3.jpg";
+import golan4 from "@/assets/projects/golan-4.jpg";
+import golan5 from "@/assets/projects/golan-5.jpg";
+import golan6 from "@/assets/projects/golan-6.jpg";
+import golan7 from "@/assets/projects/golan-7.jpg";
+import golan8 from "@/assets/projects/golan-8.jpg";
+import golan9 from "@/assets/projects/golan-9.jpg";
+import golan10 from "@/assets/projects/golan-10.jpg";
+
+const golanImages = [golan1, golan2, golan3, golan4, golan5, golan6, golan7, golan8, golan9, golan10];
 
 const Projects = () => {
   const { lang } = useLanguage();
   const tr = translations.projectsPage;
+  const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
-  const projectList = [
-    { title: t(tr.project1, lang), type: "PPS Puzzle Parking System", spaces: `120 ${t(tr.spaces, lang)}`, image: productSemiAuto },
-    { title: t(tr.project2, lang), type: "IPS In-ground System", spaces: `4 ${t(tr.spaces, lang)}`, image: productSimpleLift },
-    { title: t(tr.project3, lang), type: "ATP Automated Tower", spaces: `200 ${t(tr.spaces, lang)}`, image: productAutomated },
-    { title: t(tr.project4, lang), type: "RPS Rotary System", spaces: `16 ${t(tr.spaces, lang)}`, image: productAutomated },
-    { title: t(tr.project5, lang), type: "TP-270 Simple Lift", spaces: `40 ${t(tr.spaces, lang)}`, image: productSimpleLift },
-    { title: t(tr.project6, lang), type: "FP-360 Four Post Lift", spaces: `24 ${t(tr.spaces, lang)}`, image: productSemiAuto },
-  ];
+  const openLightbox = (index: number) => setSelectedImage(index);
+  const closeLightbox = () => setSelectedImage(null);
+  const prevImage = () => setSelectedImage((prev) => (prev !== null ? (prev - 1 + golanImages.length) % golanImages.length : 0));
+  const nextImage = () => setSelectedImage((prev) => (prev !== null ? (prev + 1) % golanImages.length : 0));
 
   return (
     <div className="pt-20">
+      {/* Hero */}
       <section className="gradient-charcoal section-padding">
         <div className="container-wide mx-auto text-center">
           <span className="text-primary font-semibold text-sm uppercase tracking-widest">{t(tr.ourWork, lang)}</span>
@@ -34,23 +43,51 @@ const Projects = () => {
         </div>
       </section>
 
+      {/* Golan Hills Project */}
       <section className="section-padding bg-background">
         <div className="container-wide mx-auto">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projectList.map((project, i) => (
-              <ScrollReveal key={project.title} delay={i * 0.05}>
-                <div className="bg-card rounded-lg border border-border overflow-hidden group">
-                  <div className="aspect-[4/3] overflow-hidden">
-                    <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  </div>
-                  <div className="p-5">
-                    <h3 className="font-display font-bold text-foreground mb-1">{project.title}</h3>
-                    <p className="text-sm text-primary font-medium mb-2">{project.type}</p>
-                    <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                      <MapPin size={14} />
-                      <span>{project.spaces}</span>
-                    </div>
-                  </div>
+          <ScrollReveal>
+            <div className="mb-10">
+              <div className="flex items-center gap-2 text-primary font-medium text-sm mb-2">
+                <MapPin size={16} />
+                <span>{t(tr.golanLocation, lang)}</span>
+              </div>
+              <h2 className="font-display text-3xl font-bold text-foreground mb-2">
+                {t(tr.golanTitle, lang)}
+              </h2>
+              <p className="text-muted-foreground mb-1">{t(tr.golanType, lang)} · {t(tr.golanSpaces, lang)}</p>
+              <p className="text-muted-foreground max-w-2xl">{t(tr.golanDesc, lang)}</p>
+            </div>
+          </ScrollReveal>
+
+          {/* Featured image */}
+          <ScrollReveal>
+            <div
+              className="rounded-lg overflow-hidden mb-6 cursor-pointer"
+              onClick={() => openLightbox(0)}
+            >
+              <img
+                src={golanImages[0]}
+                alt={t(tr.golanTitle, lang)}
+                className="w-full h-[400px] lg:h-[500px] object-cover hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+          </ScrollReveal>
+
+          {/* Gallery grid */}
+          <h3 className="font-display text-xl font-bold text-foreground mb-4">{t(tr.photoGallery, lang)}</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            {golanImages.slice(1).map((img, i) => (
+              <ScrollReveal key={i} delay={i * 0.03}>
+                <div
+                  className="aspect-[3/4] rounded-lg overflow-hidden cursor-pointer group"
+                  onClick={() => openLightbox(i + 1)}
+                >
+                  <img
+                    src={img}
+                    alt={`${t(tr.golanTitle, lang)} - ${i + 2}`}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
                 </div>
               </ScrollReveal>
             ))}
@@ -58,6 +95,7 @@ const Projects = () => {
         </div>
       </section>
 
+      {/* CTA */}
       <section className="gradient-charcoal section-padding">
         <div className="container-wide mx-auto text-center">
           <ScrollReveal>
@@ -73,6 +111,36 @@ const Projects = () => {
           </ScrollReveal>
         </div>
       </section>
+
+      {/* Lightbox */}
+      {selectedImage !== null && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onClick={closeLightbox}>
+          <button onClick={closeLightbox} className="absolute top-4 right-4 text-white/80 hover:text-white z-10">
+            <X size={32} />
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); prevImage(); }}
+            className="absolute left-4 text-white/80 hover:text-white z-10"
+          >
+            <ChevronLeft size={40} />
+          </button>
+          <img
+            src={golanImages[selectedImage]}
+            alt={`${t(tr.golanTitle, lang)} - ${selectedImage + 1}`}
+            className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            onClick={(e) => { e.stopPropagation(); nextImage(); }}
+            className="absolute right-4 text-white/80 hover:text-white z-10"
+          >
+            <ChevronRight size={40} />
+          </button>
+          <div className="absolute bottom-4 text-white/60 text-sm">
+            {selectedImage + 1} / {golanImages.length}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

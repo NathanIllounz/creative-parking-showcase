@@ -161,13 +161,15 @@ export const translations = {
     haveProject: { en: "Have a Project in Mind?", he: "יש לכם פרויקט בראש?" },
     letsDiscuss: { en: "Let's Discuss", he: "בואו נדבר" },
     // Project items
-    project1: { en: "Residential Community — Dubai", he: "קהילת מגורים — דובאי" },
-    project2: { en: "Private Villa — London", he: "וילה פרטית — לונדון" },
-    project3: { en: "Commercial Tower — Singapore", he: "מגדל מסחרי — סינגפור" },
-    project4: { en: "Shopping Mall — Riyadh", he: "קניון — ריאד" },
-    project5: { en: "Office Building — Berlin", he: "בניין משרדים — ברלין" },
-    project6: { en: "Car Dealership — Sydney", he: "סוכנות רכב — סידני" },
-    spaces: { en: "spaces", he: "מקומות" },
+    golanTitle: { en: "Two-Post Parking Lift — Golan Hills", he: "מעלית חנייה דו-עמודית — רמת הגולן" },
+    golanType: { en: "Simple Two-Post Car Parking Lift", he: "מעלית חנייה דו-עמודית פשוטה" },
+    golanSpaces: { en: "2 parking spaces", he: "2 מקומות חנייה" },
+    golanLocation: { en: "Golan Hills, Northern Israel", he: "רמת הגולן, צפון ישראל" },
+    golanDesc: {
+      en: "Installation of a simple two-post parking lift system in the Golan Hills area, providing an efficient double-parking solution for residential use.",
+      he: "התקנת מערכת מעלית חנייה דו-עמודית פשוטה באזור רמת הגולן, המספקת פתרון חנייה כפולה יעיל לשימוש מגורים.",
+    },
+    photoGallery: { en: "Photo Gallery", he: "גלריית תמונות" },
   },
 
   // Contact

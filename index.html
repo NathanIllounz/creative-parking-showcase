@@ -16,11 +16,28 @@
   <meta name="twitter:title" content="Creative Parking">
   <meta property="og:description" content="Creative Parking">
   <meta name="twitter:description" content="Creative Parking">
-  <script type="module" crossorigin src="/assets/index-aXJsVv0i.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-DIU3iNLF.css">
+  <script type="module" crossorigin src="/assets/index-C1--_v7X.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-B8GTGoUd.css">
 </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root"></div>
+    <script>
+      // GitHub Pages SPA redirect handler (paired with public/404.html)
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        var p = params.get("p");
+        if (!p) return;
+        var q = decodeURIComponent(params.get("q") || "");
+        var h = decodeURIComponent(params.get("h") || "");
+        var base = "/";
+        params.delete("p");
+        params.delete("q");
+        params.delete("h");
+        var clean = window.location.pathname + (params.toString() ? "?" + params.toString() : "");
+        window.history.replaceState(null, "", clean);
+        window.history.replaceState(null, "", base + p.replace(/^\//, "") + q + h);
+      })();
+    </script>
   </body>
 </html>

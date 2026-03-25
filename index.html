@@ -21,5 +21,22 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // GitHub Pages SPA redirect handler (paired with public/404.html)
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        var p = params.get("p");
+        if (!p) return;
+        var q = decodeURIComponent(params.get("q") || "");
+        var h = decodeURIComponent(params.get("h") || "");
+        var base = "/";
+        params.delete("p");
+        params.delete("q");
+        params.delete("h");
+        var clean = window.location.pathname + (params.toString() ? "?" + params.toString() : "");
+        window.history.replaceState(null, "", clean);
+        window.history.replaceState(null, "", base + p.replace(/^\//, "") + q + h);
+      })();
+    </script>
   </body>
 </html>

@@ -12,7 +12,7 @@ const Contact = () => {
   const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { lang } = useLanguage();
+  const { lang, isRTL } = useLanguage();
   const tr = translations.contact;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -67,20 +67,57 @@ const Contact = () => {
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t(tr.fullName, lang)}</label>
-                      <Input required maxLength={200} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder={t(tr.namePlaceholder, lang)} disabled={isSubmitting} />
+                      <Input
+                        required
+                        maxLength={200}
+                        value={form.name}
+                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                        placeholder={t(tr.namePlaceholder, lang)}
+                        disabled={isSubmitting}
+                        dir={isRTL ? "rtl" : "ltr"}
+                        className={isRTL ? "text-right" : "text-left"}
+                      />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1.5">{t(tr.email, lang)}</label>
-                      <Input type="email" required maxLength={255} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder={t(tr.emailPlaceholder, lang)} disabled={isSubmitting} />
+                      <Input
+                        type="email"
+                        required
+                        maxLength={255}
+                        value={form.email}
+                        onChange={(e) => setForm({ ...form, email: e.target.value })}
+                        placeholder={t(tr.emailPlaceholder, lang)}
+                        disabled={isSubmitting}
+                        dir={isRTL ? "rtl" : "ltr"}
+                        className={isRTL ? "text-right" : "text-left"}
+                      />
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1.5">{t(tr.phone, lang)}</label>
-                    <Input value={form.phone} maxLength={30} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder={t(tr.phonePlaceholder, lang)} disabled={isSubmitting} />
+                    <Input
+                      value={form.phone}
+                      maxLength={30}
+                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      placeholder={t(tr.phonePlaceholder, lang)}
+                      disabled={isSubmitting}
+                      dir={isRTL ? "rtl" : "ltr"}
+                      className={isRTL ? "text-right" : "text-left"}
+                    />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1.5">{t(tr.message, lang)}</label>
-                    <Textarea required rows={5} maxLength={5000} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder={t(tr.messagePlaceholder, lang)} disabled={isSubmitting} />
+                    <Textarea
+                      required
+                      rows={5}
+                      maxLength={5000}
+                      value={form.message}
+                      onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      placeholder={t(tr.messagePlaceholder, lang)}
+                      disabled={isSubmitting}
+                      dir={isRTL ? "rtl" : "ltr"}
+                      className={isRTL ? "text-right" : "text-left"}
+                    />
                   </div>
                   <button
                     type="submit"

@@ -5,6 +5,19 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
+function toUtf16LeBomBytes(text: string) {
+  const bytes = new Uint8Array(2 + text.length * 2);
+  // UTF-16LE BOM
+  bytes[0] = 0xff;
+  bytes[1] = 0xfe;
+  for (let i = 0; i < text.length; i++) {
+    const codeUnit = text.charCodeAt(i);
+    bytes[2 + i * 2] = codeUnit & 0xff;
+    bytes[2 + i * 2 + 1] = (codeUnit >> 8) & 0xff;
+  }
+  return bytes;
+}
+
 const CsvExport = () => {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,14 +29,17 @@ const CsvExport = () => {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke("export-csv", {
+      const { data, error } = await supabase.functions.invoke<string>("export-csv", {
         body: { code: code.trim() },
       });
 
       if (error) throw error;
 
-      // data is already the CSV text
-      const blob = new Blob([data], { type: "text/csv;charset=utf-8;" });
+      const csvText = typeof data === "string" ? data : "";
+      if (!csvText) throw new Error("Empty CSV response");
+
+      // Excel on Windows often mis-detects UTF-8; UTF-16LE w/ BOM is more reliable for Hebrew.
+      const blob = new Blob([toUtf16LeBomBytes(csvText)], { type: "text/csv;charset=utf-16le;" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;

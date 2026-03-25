@@ -1,4 +1,6 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+/// <reference path="../deno.d.ts" />
+
+import { createClient } from "@supabase/supabase-js";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -41,7 +43,9 @@ Deno.serve(async (req) => {
       `"${(row.message || "").replace(/"/g, '""')}"`,
     ]);
 
-    const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+    // Add UTF-8 BOM so Excel reliably opens Hebrew correctly.
+    const csvBody = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+    const csv = "\uFEFF" + csvBody;
 
     return new Response(csv, {
       status: 200,

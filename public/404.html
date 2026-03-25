@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Creative Parking</title>
+    <script>
+      // GitHub Pages SPA fallback:
+      // redirect any unknown route back to index.html, preserving path/query/hash.
+      (function () {
+        var l = window.location;
+        var base = "/";
+        var path = l.pathname.startsWith(base) ? l.pathname.slice(base.length) : l.pathname.slice(1);
+        var redirect = base + "?p=" + encodeURIComponent("/" + path) + "&q=" + encodeURIComponent(l.search) + "&h=" + encodeURIComponent(l.hash);
+        l.replace(redirect);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

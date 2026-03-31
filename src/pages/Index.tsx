@@ -35,15 +35,15 @@ const Index = () => {
   return (
     <div>
       {/* Hero */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-black">
-        <div className="absolute inset-0">
+      <section className="relative flex flex-col md:justify-center overflow-hidden bg-black min-h-auto md:min-h-[90vh]">
+        <div className="relative md:absolute inset-0 w-full h-[60vh] md:h-auto bg-black">
           <motion.img 
             initial={{ opacity: 0 }}
             animate={{ opacity: videoFinished ? 1 : 0 }}
             transition={{ duration: 1 }}
             src={heroImage} 
             alt="Creative Parking lift system" 
-            className="w-full h-full object-cover absolute inset-0" 
+            className="w-full h-full object-contain md:object-cover absolute inset-0" 
           />
           <motion.video 
             autoPlay 
@@ -53,17 +53,17 @@ const Index = () => {
             onEnded={() => setVideoFinished(true)}
             animate={{ opacity: videoFinished ? 0 : 1 }}
             transition={{ duration: 1 }}
-            className="w-full h-full object-cover absolute inset-0"
+            className="w-full h-full object-contain md:object-cover absolute inset-0"
           >
             <source src={heroVideo} type="video/mp4" />
           </motion.video>
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-black/40 md:bg-black/50" />
         </div>
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          className="relative container-wide mx-auto px-4 sm:px-6 lg:px-8 py-32"
+          className="relative container-wide mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-32 flex-1 flex flex-col justify-center"
         >
           <motion.div
             initial={{ opacity: 0, y: 40 }}

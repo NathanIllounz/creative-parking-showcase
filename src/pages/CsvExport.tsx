@@ -29,14 +29,38 @@ const CsvExport = () => {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke<string>("export-csv", {
-        body: { code: code.trim() },
-      });
+      // NOTE: Since we are bypassing Edge Functions and Auth, 
+      // this password check happens in the browser bundle.
+      // Additionally, the Supabase table must have a public SELECT policy.
+      const ADMIN_CODE = "floraI12345!";
 
-      if (error) throw error;
+      if (code.trim() !== ADMIN_CODE) {
+        throw new Error("Invalid admin code");
+      }
 
-      const csvText = typeof data === "string" ? data : "";
-      if (!csvText) throw new Error("Empty CSV response");
+      // Fetch directly from the table bypassing Edge Functions
+      const { data, error } = await supabase
+        .from("contact_submissions")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Supabase Select Error:", error);
+        throw error;
+      }
+
+      const headers = ["Date", "Name", "Email", "Phone", "Message"];
+      const rows = (data || []).map((row) => [
+        new Date(row.created_at).toLocaleString("en-GB", { timeZone: "Asia/Jerusalem" }),
+        `"${(row.name || "").replace(/"/g, '""')}"`,
+        `"${(row.email || "").replace(/"/g, '""')}"`,
+        `"${(row.phone || "").replace(/"/g, '""')}"`,
+        `"${(row.message || "").replace(/"/g, '""')}"`,
+      ]);
+
+      const csvText = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+
+      if (!csvText) throw new Error("Empty CSV generated");
 
       // Excel on Windows often mis-detects UTF-8; UTF-16LE w/ BOM is more reliable for Hebrew.
       const blob = new Blob([toUtf16LeBomBytes(csvText)], { type: "text/csv;charset=utf-16le;" });
@@ -49,10 +73,10 @@ const CsvExport = () => {
 
       toast({ title: "Success", description: "CSV downloaded successfully." });
     } catch (err: any) {
-      console.error(err);
+      console.error("CsvExport Fetch/Process Error:", err);
       toast({
         title: "Access Denied",
-        description: "Invalid admin code or export failed.",
+        description: err.message === "Invalid admin code" ? "Invalid admin code" : "Export failed. Check console.",
         variant: "destructive",
       });
     } finally {

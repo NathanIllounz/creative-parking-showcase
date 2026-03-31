@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { translations } from "@/constants/translations";
 import { useLanguage, t } from "@/contexts/LanguageContext";
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -20,6 +21,18 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          user_name: form.name,
+          user_email: form.email,
+          user_phone: form.phone,
+          message: form.message,
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+
       const { data, error } = await supabase.functions.invoke("handle-contact", {
         body: { name: form.name, email: form.email, phone: form.phone, message: form.message },
       });

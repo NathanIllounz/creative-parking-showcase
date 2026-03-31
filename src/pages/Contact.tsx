@@ -154,7 +154,7 @@ const Contact = () => {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-foreground">{t(tr.phoneLabel, lang)}</p>
-                        <p className="text-sm text-muted-foreground">+972 50-874-9988</p>
+                        <p className="text-sm text-muted-foreground">+972 50-874-9988 / +972 52-698-3065</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-4">

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Shield, Wrench, Zap, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
@@ -11,6 +12,7 @@ import productSimpleLift from "@/assets/product-simple-lift.jpg";
 import productSemiAuto from "@/assets/product-semi-auto.jpg";
 import productAutomated from "@/assets/product-automated.jpg";
 import productSpecial from "@/assets/products/s-vts-1.jpg";
+import heroVideo from "@/assets/Elevators_Form_Creative_Parking_Word.mp4";
 
 const categoryImages: Record<string, string> = {
   simple: productSimpleLift,
@@ -22,6 +24,7 @@ const categoryImages: Record<string, string> = {
 const featuredProducts = [products[0], products[14], products[16]];
 
 const Index = () => {
+  const [videoFinished, setVideoFinished] = useState(false);
   const { lang } = useLanguage();
   const tr = translations.index;
   const catTr = translations.categories;
@@ -32,16 +35,40 @@ const Index = () => {
   return (
     <div>
       {/* Hero */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-black">
         <div className="absolute inset-0">
-          <img src={heroImage} alt="Creative Parking lift system" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-secondary/95 via-secondary/70 to-secondary/40" />
+          <motion.img 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: videoFinished ? 1 : 0 }}
+            transition={{ duration: 1 }}
+            src={heroImage} 
+            alt="Creative Parking lift system" 
+            className="w-full h-full object-cover absolute inset-0" 
+          />
+          <motion.video 
+            autoPlay 
+            muted 
+            playsInline 
+            poster={heroImage}
+            onEnded={() => setVideoFinished(true)}
+            animate={{ opacity: videoFinished ? 0 : 1 }}
+            transition={{ duration: 1 }}
+            className="w-full h-full object-cover absolute inset-0"
+          >
+            <source src={heroVideo} type="video/mp4" />
+          </motion.video>
+          <div className="absolute inset-0 bg-black/50" />
         </div>
-        <div className="relative container-wide mx-auto px-4 sm:px-6 lg:px-8 py-32">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="relative container-wide mx-auto px-4 sm:px-6 lg:px-8 py-32"
+        >
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="max-w-2xl"
           >
             <span className="inline-block text-primary font-semibold text-sm uppercase tracking-widest mb-4">
@@ -70,7 +97,7 @@ const Index = () => {
               </Link>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Stats Bar */}

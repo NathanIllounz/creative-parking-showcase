@@ -21,16 +21,20 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
+      const templateParams = {
+        user_name: form.name,
+        user_email: form.email,
+        user_phone: form.phone,
+        message: form.message,
+      };
+
+      console.log("EmailJS templateParams:", templateParams);
+
       await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        {
-          user_name: form.name,
-          user_email: form.email,
-          user_phone: form.phone,
-          message: form.message,
-        },
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        import.meta.env.VITE_EMAILJS_SERVICE_ID as string,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string,
+        templateParams,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string
       );
 
       const { data, error } = await supabase.functions.invoke("handle-contact", {

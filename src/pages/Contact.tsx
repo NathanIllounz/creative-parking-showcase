@@ -37,11 +37,20 @@ const Contact = () => {
         import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string
       );
 
-      const { data, error } = await supabase.functions.invoke("handle-contact", {
-        body: { name: form.name, email: form.email, phone: form.phone, message: form.message },
-      });
+      // We bypassed Edge functions, now insert directly into Supabase
+      const { data, error } = await supabase
+        .from("contact_submissions")
+        .insert({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          phone: form.phone?.trim() || null,
+          message: form.message.trim(),
+        });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase Insert Error:", error);
+        throw error;
+      }
 
       toast({
         title: t(tr.successTitle, lang),

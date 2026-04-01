@@ -26,6 +26,10 @@ const featuredProducts = [products[0], products[14], products[16]];
 const Index = () => {
   const [videoFinished, setVideoFinished] = useState(false);
   const { lang } = useLanguage();
+  
+  // Evaluate synchronously for Framer Motion to grab the right animate values on 1st paint
+  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
+
   const tr = translations.index;
   const catTr = translations.categories;
 
@@ -35,15 +39,21 @@ const Index = () => {
   return (
     <div>
       {/* Hero */}
-      <section className="relative flex flex-col md:justify-center overflow-hidden bg-black min-h-auto md:min-h-[90vh]">
-        <div className="relative md:absolute inset-0 w-full h-[60vh] md:h-auto bg-black">
+      <section className="relative flex flex-col md:block overflow-hidden bg-black w-full min-h-auto md:h-[calc(100vh-64px)] lg:h-[calc(100vh-80px)] mt-16 lg:mt-20">
+        <motion.div 
+          initial={{ height: isMobile ? "auto" : "100%" }}
+          animate={{ height: isMobile ? (videoFinished ? 0 : "auto") : "100%" }}
+          transition={{ duration: 1, ease: "easeInOut" }}
+          style={{ overflow: "hidden" }}
+          className="relative md:absolute inset-0 w-full md:aspect-auto md:h-full bg-black pt-[2px] md:pt-0"
+        >
           <motion.img 
             initial={{ opacity: 0 }}
             animate={{ opacity: videoFinished ? 1 : 0 }}
             transition={{ duration: 1 }}
             src={heroImage} 
             alt="Creative Parking lift system" 
-            className="w-full h-full object-contain md:object-cover absolute inset-0" 
+            className="hidden md:block w-full h-full object-contain md:object-cover absolute inset-0" 
           />
           <motion.video 
             autoPlay 
@@ -51,52 +61,70 @@ const Index = () => {
             playsInline 
             poster={heroImage}
             onEnded={() => setVideoFinished(true)}
+            onTimeUpdate={(e) => {
+              if (e.currentTarget.currentTime >= 7 && !videoFinished) {
+                setVideoFinished(true);
+              }
+            }}
             animate={{ opacity: videoFinished ? 0 : 1 }}
             transition={{ duration: 1 }}
-            className="w-full h-full object-contain md:object-cover absolute inset-0"
+            className="w-full h-auto md:h-full object-contain relative md:absolute md:inset-0"
           >
             <source src={heroVideo} type="video/mp4" />
           </motion.video>
-          <div className="absolute inset-0 bg-black/40 md:bg-black/50" />
-        </div>
+          <div className="hidden md:block absolute inset-0 bg-black/50 pointer-events-none" />
+        </motion.div>
+        
         <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="relative container-wide mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-32 flex-1 flex flex-col justify-center"
+          initial={{ opacity: 0, height: isMobile ? 0 : "100%", y: 40 }}
+          animate={{ 
+            opacity: videoFinished ? 1 : 0, 
+            height: isMobile ? (videoFinished ? "auto" : 0) : "100%",
+            y: videoFinished ? 0 : 40 
+          }}
+          transition={{ duration: 1, ease: "easeInOut" }}
+          style={{ overflow: "hidden" }}
+          className="relative z-10 w-full md:h-full flex flex-col justify-center"
         >
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="max-w-2xl"
-          >
-            <span className="inline-block text-primary font-semibold text-sm uppercase tracking-widest mb-4">
-              {t(tr.heroTag, lang)}
-            </span>
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-secondary-foreground leading-tight mb-6">
-              {t(tr.heroTitle1, lang)}
-              <span className="text-gradient-orange">{t(tr.heroTitleHighlight, lang)}</span>
-              {t(tr.heroTitle2, lang)}
-            </h1>
-            <p className="text-lg text-secondary-foreground/70 mb-8 max-w-lg">
-              {t(tr.heroDesc, lang)}
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link
-                to="/products"
-                className="inline-flex items-center gap-2 px-6 py-3 gradient-orange text-primary-foreground font-semibold rounded-md hover:opacity-90 transition-opacity"
-              >
-                {t(tr.exploreProducts, lang)} <ArrowRight size={18} />
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3 border border-secondary-foreground/30 text-secondary-foreground font-semibold rounded-md hover:bg-secondary-foreground/5 transition-colors"
-              >
-                {t(translations.nav.contactUs, lang)}
-              </Link>
+          {/* Mobile Image Background for the sliding text block */}
+          <div className="md:hidden absolute inset-0 w-full h-full">
+            <img 
+              src={heroImage} 
+              alt="Creative Parking lift system" 
+              className="w-full h-full object-cover" 
+            />
+            <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+          </div>
+
+          <div className="relative container-wide mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-0">
+            <div className="max-w-2xl">
+              <span className="inline-block text-primary font-semibold text-sm uppercase tracking-widest mb-4">
+                {t(tr.heroTag, lang)}
+              </span>
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-secondary-foreground leading-tight mb-6">
+                {t(tr.heroTitle1, lang)}
+                <span className="text-gradient-orange">{t(tr.heroTitleHighlight, lang)}</span>
+                {t(tr.heroTitle2, lang)}
+              </h1>
+              <p className="text-lg text-secondary-foreground/70 mb-8 max-w-lg">
+                {t(tr.heroDesc, lang)}
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  to="/products"
+                  className="inline-flex items-center gap-2 px-6 py-3 gradient-orange text-primary-foreground font-semibold rounded-md hover:opacity-90 transition-opacity"
+                >
+                  {t(tr.exploreProducts, lang)} <ArrowRight size={18} />
+                </Link>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 px-6 py-3 border border-secondary-foreground/30 text-secondary-foreground font-semibold rounded-md hover:bg-secondary-foreground/5 transition-colors"
+                >
+                  {t(translations.nav.contactUs, lang)}
+                </Link>
+              </div>
             </div>
-          </motion.div>
+          </div>
         </motion.div>
       </section>
 

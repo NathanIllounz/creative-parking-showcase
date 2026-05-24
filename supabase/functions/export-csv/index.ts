@@ -45,7 +45,8 @@ Deno.serve(async (req) => {
     ]);
 
     // Add UTF-8 BOM so Excel reliably opens Hebrew correctly.
-    const csvBody = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+    // Adding "sep=," instructs Excel to split columns on commas.
+    const csvBody = ["sep=,", headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
     const csv = "\uFEFF" + csvBody;
 
     return new Response(csv, {

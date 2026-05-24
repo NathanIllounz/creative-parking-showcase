@@ -59,7 +59,8 @@ const CsvExport = () => {
         `"${(row.message || "").replace(/"/g, '""')}"`,
       ]);
 
-      const csvText = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+      // Adding "sep=," instructs Excel to split columns on commas
+      const csvText = ["sep=,", headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
 
       if (!csvText) throw new Error("Empty CSV generated");
 

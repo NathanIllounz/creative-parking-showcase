@@ -12,7 +12,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { name, email, phone, message } = await req.json();
+    const { name, email, phone, message, kind } = await req.json();
 
     if (!name || typeof name !== "string" || name.trim().length === 0 || name.length > 200) {
       return new Response(JSON.stringify({ error: "Invalid name" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -22,6 +22,9 @@ Deno.serve(async (req) => {
     }
     if (phone && (typeof phone !== "string" || phone.length > 30)) {
       return new Response(JSON.stringify({ error: "Invalid phone" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    if (kind && (typeof kind !== "string" || kind.length > 100)) {
+      return new Response(JSON.stringify({ error: "Invalid kind" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
     if (!message || typeof message !== "string" || message.trim().length === 0 || message.length > 5000) {
       return new Response(JSON.stringify({ error: "Invalid message" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -34,6 +37,7 @@ Deno.serve(async (req) => {
       email: email.trim(),
       phone: phone?.trim() || null,
       message: message.trim(),
+      kind: kind?.trim() || null,
     });
 
     if (dbError) {

@@ -34,9 +34,10 @@ Deno.serve(async (req) => {
     if (error) throw error;
 
     // Build CSV
-    const headers = ["Date", "Name", "Email", "Phone", "Message"];
+    const headers = ["Date", "Kind", "Name", "Email", "Phone", "Message"];
     const rows = (data || []).map((row) => [
       new Date(row.created_at).toLocaleString("en-GB", { timeZone: "Asia/Jerusalem" }),
+      `"${(row.kind || "").replace(/"/g, '""')}"`,
       `"${(row.name || "").replace(/"/g, '""')}"`,
       `"${(row.email || "").replace(/"/g, '""')}"`,
       `"${(row.phone || "").replace(/"/g, '""')}"`,

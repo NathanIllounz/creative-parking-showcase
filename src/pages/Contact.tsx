@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Mail, Phone, MapPin, Send, Loader2 } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Input } from "@/components/ui/input";
@@ -11,21 +12,75 @@ import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const { toast } = useToast();
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [searchParams] = useSearchParams();
   const { lang, isRTL } = useLanguage();
   const tr = translations.contact;
+
+  const [form, setForm] = useState({ 
+    name: "", 
+    email: "", 
+    phone: "", 
+    message: "",
+    kind: "general"
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const typeParam = searchParams.get("type");
+    const productParam = searchParams.get("product");
+
+    let initialKind = "general";
+    if (typeParam === "quote") {
+      initialKind = "quote";
+    } else if (typeParam === "support") {
+      initialKind = "support";
+    } else if (typeParam === "partnership") {
+      initialKind = "partnership";
+    }
+
+    let prefilledMessage = "";
+    if (productParam) {
+      if (lang === "he") {
+        prefilledMessage = `שלום, אני מעוניין לקבל הצעת מחיר עבור המוצר: ${productParam}.\n\n`;
+      } else {
+        prefilledMessage = `Hello, I am interested in requesting a quote for product: ${productParam}.\n\n`;
+      }
+    }
+
+    setForm((prev) => ({
+      ...prev,
+      kind: initialKind,
+      message: prefilledMessage || prev.message,
+    }));
+  }, [searchParams, lang]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
+      const getKindName = (kindVal: string, l: "en" | "he") => {
+        switch (kindVal) {
+          case "quote":
+            return t(tr.kindQuote, l);
+          case "support":
+            return t(tr.kindSupport, l);
+          case "partnership":
+            return t(tr.kindPartnership, l);
+          default:
+            return t(tr.kindGeneral, l);
+        }
+      };
+
+      const requestKindReadable = getKindName(form.kind, "en");
+      const requestKindEmail = getKindName(form.kind, lang);
+
       const templateParams = {
         user_name: form.name,
         user_email: form.email,
         user_phone: form.phone,
         message: form.message,
+        request_kind: requestKindEmail,
       };
 
       console.log("EmailJS templateParams:", templateParams);
@@ -45,6 +100,7 @@ const Contact = () => {
           email: form.email.trim(),
           phone: form.phone?.trim() || null,
           message: form.message.trim(),
+          kind: requestKindReadable,
         });
 
       if (error) {
@@ -56,7 +112,7 @@ const Contact = () => {
         title: t(tr.successTitle, lang),
         description: t(tr.successDesc, lang),
       });
-      setForm({ name: "", email: "", phone: "", message: "" });
+      setForm({ name: "", email: "", phone: "", message: "", kind: "general" });
     } catch (error) {
       console.error("Contact form error:", error);
       toast({
@@ -130,6 +186,23 @@ const Contact = () => {
                       dir={isRTL ? "rtl" : "ltr"}
                       className={isRTL ? "text-right" : "text-left"}
                     />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-1.5">{t(tr.kindLabel, lang)}</label>
+                    <select
+                      value={form.kind}
+                      onChange={(e) => setForm({ ...form, kind: e.target.value })}
+                      disabled={isSubmitting}
+                      dir={isRTL ? "rtl" : "ltr"}
+                      className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+                        isRTL ? "text-right" : "text-left"
+                      }`}
+                    >
+                      <option value="general">{t(tr.kindGeneral, lang)}</option>
+                      <option value="quote">{t(tr.kindQuote, lang)}</option>
+                      <option value="support">{t(tr.kindSupport, lang)}</option>
+                      <option value="partnership">{t(tr.kindPartnership, lang)}</option>
+                    </select>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1.5">{t(tr.message, lang)}</label>

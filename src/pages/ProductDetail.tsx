@@ -75,7 +75,7 @@ const ProductDetail = () => {
               <h2 className="font-display text-xl text-muted-foreground mb-4">{product.name}</h2>
               <p className="text-muted-foreground mb-6">{product.shortDescription}</p>
               <Link
-                to="/contact"
+                to={`/contact?type=quote&product=${encodeURIComponent(product.model)}`}
                 className="inline-flex items-center gap-2 px-6 py-3 gradient-orange text-primary-foreground font-semibold rounded-md hover:opacity-90 transition-opacity"
               >
                 {t(tr.requestQuote, lang)} <ArrowRight size={18} />
@@ -176,7 +176,7 @@ const ProductDetail = () => {
             </h2>
             <p className="text-secondary-foreground/60 mb-8">{t(tr.ctaDesc, lang)}</p>
             <Link
-              to="/contact"
+              to={`/contact?type=quote&product=${encodeURIComponent(product.model)}`}
               className="inline-flex items-center gap-2 px-8 py-4 gradient-orange text-primary-foreground font-semibold rounded-md hover:opacity-90 transition-opacity"
             >
               {t(tr.getQuote, lang)} <ArrowRight size={18} />
